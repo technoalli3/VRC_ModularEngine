@@ -1,4 +1,4 @@
-﻿
+
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
@@ -51,11 +51,8 @@ public class Bolt : UdonSharpBehaviour
             gameObject.GetComponent<MeshRenderer>().material.SetFloat("_MatcapEmissionStrength", 0f);//disable matcap
             gameObject.GetComponent<MeshRenderer>().material.SetFloat("_MatcapReplace", 0f);
 
-            if(Networking.IsOwner(gameObject))//only owner should call check functions
-            {
-                toolHead.GetComponent<ToolHead>().LockTool();
-                SendCustomEventDelayedSeconds("CallToolUnlock", removalSpeed, VRC.Udon.Common.Enums.EventTiming.Update);
-            }
+            SendCustomEventDelayedSeconds("CallToolUnlock", removalSpeed, VRC.Udon.Common.Enums.EventTiming.Update);
+            toolHead.GetComponent<ToolHead>().LockTool();
         }
     }
 
