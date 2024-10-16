@@ -1,4 +1,4 @@
-﻿
+
 using UdonSharp;
 using UnityEngine;
 using VRC.SDK3.Components;
@@ -18,7 +18,11 @@ public class ToolHead : UdonSharpBehaviour
 
     public void LockTool()
     {
-        if (Networking.IsOwner(toolPickup))
+        if(!Networking.IsOwner(gameObject))
+        {
+            Networking.SetOwner(Networking.LocalPlayer, gameObject);
+        }
+        if (Networking.IsOwner(gameObject))
         {
             toolPickup.GetComponent<VRCPickup>().Drop(); //drops tool
             toolPickup.GetComponent<VRCPickup>().pickupable = false; //locks tool
@@ -30,7 +34,11 @@ public class ToolHead : UdonSharpBehaviour
 
     public void UnlockTool()
     {
-        if (Networking.IsOwner(toolPickup))
+        if (!Networking.IsOwner(gameObject))
+        {
+            Networking.SetOwner(Networking.LocalPlayer, gameObject);
+        }
+        if (Networking.IsOwner(gameObject))
         {
             toolPickup.GetComponent<VRCPickup>().pickupable = true; //unlocks tool
             ratchetSound.SetActive(false); //disable sound
@@ -41,7 +49,7 @@ public class ToolHead : UdonSharpBehaviour
 
     public override void OnDeserialization()
     {
-        if(!Networking.IsOwner(toolPickup)) //client sync
+        if(!Networking.IsOwner(gameObject)) //client sync
         {
             toolPickup.GetComponent<VRCPickup>().pickupable = !isLocked;
             ratchetSound.SetActive(isLocked);
