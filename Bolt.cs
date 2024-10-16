@@ -58,6 +58,10 @@ public class Bolt : UdonSharpBehaviour
 
     public void CallToolUnlock()
     {
+        if(!Networking.IsOwner(gameObject))
+        {
+            Networking.SetOwner(Networking.LocalPlayer, gameObject);
+        }
         if (Networking.IsOwner(gameObject))
         {
             toolHead.GetComponent<ToolHead>().UnlockTool(); //calls the toolhead component to unlock corresponding pickup
